@@ -59,8 +59,7 @@ def GetEmployeesWorkedToday():
     return result[0] 
 
 def GetHomepageData():
-    x = dict()
-    x['AppointmentsToday'] = GetAppointmentCount()
+    x = {'AppointmentsToday': GetAppointmentCount()}
     x['CompletedAppointmentsToday'] = GetCompletedAppointmentCount()
     x['BrokenAppointmentsToday'] = GetBrokenAppointments()
     x['ProductionToday'] = GetProduction()

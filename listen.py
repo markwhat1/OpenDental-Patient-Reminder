@@ -8,7 +8,7 @@ import os
 import homepage
 from collections import Counter
 
-user_tokens = list()
+user_tokens = []
 
 #Local Path
 try:
@@ -25,10 +25,7 @@ def token_gen():
     return ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(100))
 
 def user_verification(token):
-    if token in user_tokens:
-        return True
-    else:
-        return False
+    return token in user_tokens
 
 #Checks for a Y or Yes response from the patient
 def CheckForYes(string):
@@ -39,9 +36,7 @@ def CheckForYes(string):
         return True
     if string == 'y':
         return True
-    if string == 'Y':
-        return True
-    return False
+    return string == 'Y'
 
 
 #MySql configuration for OpenDental
@@ -105,11 +100,11 @@ def chart_responder(chart):
 
 @app.route("/logs/<log>", methods=['GET'])
 def log_responder(log):
-    if log == 'sent':
-        f = open(localpath + '//logs/Send-Log.html')
-        return f.read()
     if log == 'received':
         f = open(localpath + '//logs/Received-Log.html')
+        return f.read()
+    elif log == 'sent':
+        f = open(localpath + '//logs/Send-Log.html')
         return f.read()
 
 @app.route("/login", methods=['GET'])
@@ -142,8 +137,7 @@ def Home():
     if user_verification(token):
         return render_template('home.html')
     else:
-        response = make_response(redirect('/login'))
-        return response
+        return make_response(redirect('/login'))
 
 
  

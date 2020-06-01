@@ -19,13 +19,13 @@ def AppointmentView():
     cursor.execute(query)
     results = cursor.fetchall()
     current_date = None
-    dates = list()
-    numbers = list()
+    dates = []
+    numbers = []
     x = 0
     for result in results:
-        if current_date == None:
+        if current_date is None:
             current_date = result[0]
-            dates.append(result[0].strftime('%a - %m/%d'))
+            dates.append(current_date.strftime('%a - %m/%d'))
             numbers.append(1)
         if result[0] > current_date:
             x += 1
@@ -34,8 +34,8 @@ def AppointmentView():
             numbers.append(1)
         else:
             numbers[x] += 1
-    
-    
+
+
     return graph.ClassicBar('Future appointment projections', 'Date', 'Patients', dates, numbers, 750, 3000)
             
 def IncomeByCarrier():
@@ -48,8 +48,8 @@ def IncomeByCarrier():
              GROUP BY CarrierName""")
     cursor.execute(query)
     results = cursor.fetchall()
-    totalcash = list()
-    carrier = list()
+    totalcash = []
+    carrier = []
     for result in results:
         totalcash.append(result[1])
         carrier.append(result[0].replace("'", ""))
@@ -69,16 +69,14 @@ def TodaysPayments():
              && payment.PayDate = CURDATE()""")
     cursor.execute(query)
     results = cursor.fetchall()
-    patientname = list()
-    payment = list()
+    patientname = []
+    payment = []
     for result in results:
         if result[3] == 71:
             patientname.append('Credit: ' + result[2])
-            payment.append(result[5])
         else:
             patientname.append('Cash: ' + result[2])
-            payment.append(result[5])
-
+        payment.append(result[5])
     return graph.ClassicBar('Cash Payments Made Today', 'Patient', 'Payment', patientname, payment, 1200, 1000)
 
 
@@ -94,15 +92,13 @@ def YesterdaysPayments():
              && payment.PayDate = CURDATE() - 1""")
     cursor.execute(query)
     results = cursor.fetchall()
-    patientname = list()
-    payment = list()
+    patientname = []
+    payment = []
     for result in results:
         if result[3] == 71:
             patientname.append('Credit: ' + result[2])
-            payment.append(result[5])
         else:
             patientname.append('Cash: ' + result[2])
-            payment.append(result[5])
-
+        payment.append(result[5])
     return graph.ClassicBar('Cash Payments Made Yesterday', 'Patient', 'Payment', patientname, payment, 1200, 1000)
 
